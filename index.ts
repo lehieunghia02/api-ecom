@@ -46,7 +46,13 @@ app.get('/api/health', (req, res) => {
 app.use(function (err: any, req: any, res: any, next: any) {
   responseError(res, err)
 })
+process.on('unhandledRejection', (error) => {
+  console.error('Unhandled Rejection:', error)
+})
 
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error)
+})
 app.listen(process.env.PORT, function () {
   console.log(chalk.greenBright(`API listening on port ${process.env.PORT}!`))
 })
