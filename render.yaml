@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: api-ecom
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+    healthCheckPath: /api/health
+    autoDeploy: true
