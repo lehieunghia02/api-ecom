@@ -20,6 +20,7 @@ export const connectMongoDB = () => {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
+    sslValidate: true,
   })
 
   mongoose.connection.on('connected', function () {
