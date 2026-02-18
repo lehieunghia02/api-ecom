@@ -15,6 +15,6 @@ commonCategoryRouter.get(
   '/:category_id',
   helpersMiddleware.idRule('category_id'),
   helpersMiddleware.idValidator,
-  wrapAsync(categoryController.getCategory)
+  wrapAsync(categoryController.getCategory),
 )
 export default commonCategoryRouter

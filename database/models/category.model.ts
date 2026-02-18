@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose'
 
 const CategorySchema = new Schema({
-  name: String
+  name: String,
 })
 
 export const CategoryModel = mongoose.model('categories', CategorySchema)

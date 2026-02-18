@@ -1,0 +1,30 @@
+version: '3.8'
+
+# UAT Environment - Chạy: docker-compose -f docker-compose.yml -f docker-compose.uat.yml up -d
+services:
+  api:
+    image: api-ecom:uat
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api-ecom-uat
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - HOST=0.0.0.0
+      - USERNAME_DB=${USERNAME_DB}
+      - PASSWORD_DB=${PASSWORD_DB}
+      - HOST_DB=${HOST_DB_UAT:-${HOST_DB}}
+      - PORT_DB=${PORT_DB_UAT:-${PORT_DB}}
+      - NAME_DB=${NAME_DB_UAT:-${NAME_DB}_uat}
+      - AUTH_SOURCE=${AUTH_SOURCE}
+      - SECRET_KEY_JWT=${SECRET_KEY_JWT}
+      - PRODUCTION_HOST=${UAT_HOST:-http://your-uat-domain.com}
+    volumes:
+      - upload_uat:/app/upload
+
+volumes:
+  upload_uat:

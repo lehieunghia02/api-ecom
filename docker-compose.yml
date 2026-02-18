@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=3000
+      - HOST=0.0.0.0
+      - USERNAME_DB=${USERNAME_DB}
+      - PASSWORD_DB=${PASSWORD_DB}
+      - HOST_DB=${HOST_DB}
+      - PORT_DB=${PORT_DB}
+      - NAME_DB=${NAME_DB}
+      - AUTH_SOURCE=${AUTH_SOURCE}
+      - SECRET_KEY_JWT=${SECRET_KEY_JWT}
+      - PRODUCTION_HOST=${PRODUCTION_HOST:-}
+    volumes:
+      - upload_data:/app/upload
+
+volumes:
+  upload_data:

@@ -1,0 +1,62 @@
+name: CI/CD Deploy to VPS
+
+on:
+  push:
+    branches:
+      - uat
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'uat'
+        type: choice
+        options:
+          - uat
+          - production
+
+jobs:
+  deploy-uat:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.ref == 'refs/heads/uat'
+    runs-on: ubuntu-latest
+    name: Deploy UAT
+    environment: uat
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to UAT VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.UAT_SSH_HOST }}
+          username: ${{ secrets.UAT_SSH_USER }}
+          key: ${{ secrets.UAT_SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.UAT_DEPLOY_PATH }}
+            git fetch origin && git checkout uat && git pull origin uat
+            docker compose -f docker-compose.yml -f docker-compose.uat.yml build --no-cache
+            docker compose -f docker-compose.yml -f docker-compose.uat.yml up -d
+            docker system prune -f
+
+  deploy-production:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    name: Deploy Production
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Production VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_SSH_HOST }}
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.PROD_DEPLOY_PATH }}
+            git fetch origin && git checkout main && git pull origin main
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+            docker system prune -f

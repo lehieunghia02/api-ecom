@@ -1,0 +1,30 @@
+version: '3.8'
+
+# Production Environment - Chạy: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+services:
+  api:
+    image: api-ecom:production
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api-ecom-production
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      - USERNAME_DB=${USERNAME_DB}
+      - PASSWORD_DB=${PASSWORD_DB}
+      - HOST_DB=${HOST_DB}
+      - PORT_DB=${PORT_DB}
+      - NAME_DB=${NAME_DB}
+      - AUTH_SOURCE=${AUTH_SOURCE}
+      - SECRET_KEY_JWT=${SECRET_KEY_JWT}
+      - PRODUCTION_HOST=${PRODUCTION_HOST}
+    volumes:
+      - upload_prod:/app/upload
+
+volumes:
+  upload_prod:

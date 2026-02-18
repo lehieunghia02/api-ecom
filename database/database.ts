@@ -6,8 +6,7 @@ import mongoose from 'mongoose'
 import chalk from 'chalk'
 
 //require database URL from properties file
-// const dbURL = `mongodb+srv://${process.env.USERNAME_DB}:${process.env.PASSWORD_DB}@ecommerce.f2agf.mongodb.net/main?retryWrites=true&w=majority`
-const dbURL = `mongodb+srv://${process.env.USERNAME_DB}:${process.env.PASSWORD_DB}@ecom-cluster.7psgc3w.mongodb.net/main`
+const dbURL = `mongodb://${process.env.USERNAME_DB}:${process.env.PASSWORD_DB}@${process.env.HOST_DB}:${process.env.PORT_DB}/${process.env.NAME_DB}?authSource=${process.env.AUTH_SOURCE}`
 const connected = chalk.bold.cyan
 const error = chalk.bold.yellow
 const disconnected = chalk.bold.red
@@ -25,13 +24,13 @@ export const connectMongoDB = () => {
 
   mongoose.connection.on('connected', function () {
     console.log(
-      connected('Mongoose default connection is open to MongoDB Atlas')
+      connected('Mongoose default connection is open to MongoDB Atlas'),
     )
   })
 
   mongoose.connection.on('error', function (err) {
     console.log(
-      error('Mongoose default connection has occured ' + err + ' error')
+      error('Mongoose default connection has occured ' + err + ' error'),
     )
   })
 
@@ -43,8 +42,8 @@ export const connectMongoDB = () => {
     mongoose.connection.close(function () {
       console.log(
         termination(
-          'Mongoose default connection is disconnected due to application termination'
-        )
+          'Mongoose default connection is disconnected due to application termination',
+        ),
       )
       process.exit(0)
     })

@@ -12,14 +12,14 @@ import { UserModel } from '../database/models/user.model'
 const verifyAccessToken = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const access_token = req.headers.authorization?.replace('Bearer ', '')
   if (access_token) {
     try {
       const decoded = (await verifyToken(
         access_token,
-        config.SECRET_KEY
+        config.SECRET_KEY,
       )) as PayloadToken
       req.jwtDecoded = decoded
       const accessTokenDB = await AccessTokenModel.findOne({
@@ -31,7 +31,7 @@ const verifyAccessToken = async (
       }
       return responseError(
         res,
-        new ErrorHandler(STATUS.UNAUTHORIZED, 'Không tồn tại token')
+        new ErrorHandler(STATUS.UNAUTHORIZED, 'Không tồn tại token'),
       )
     } catch (error) {
       return responseError(res, error)
@@ -39,21 +39,21 @@ const verifyAccessToken = async (
   }
   return responseError(
     res,
-    new ErrorHandler(STATUS.UNAUTHORIZED, 'Token không được gửi')
+    new ErrorHandler(STATUS.UNAUTHORIZED, 'Token không được gửi'),
   )
 }
 
 const verifyRefreshToken = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const refresh_token = req.body.refresh_token
   if (refresh_token) {
     try {
       const decoded = (await verifyToken(
         refresh_token,
-        config.SECRET_KEY
+        config.SECRET_KEY,
       )) as PayloadToken
       req.jwtDecoded = decoded
       const refreshTokenDB = await RefreshTokenModel.findOne({
@@ -65,7 +65,7 @@ const verifyRefreshToken = async (
       }
       return responseError(
         res,
-        new ErrorHandler(STATUS.UNAUTHORIZED, 'Không tồn tại token')
+        new ErrorHandler(STATUS.UNAUTHORIZED, 'Không tồn tại token'),
       )
     } catch (error) {
       return responseError(res, error)
@@ -73,7 +73,7 @@ const verifyRefreshToken = async (
   }
   return responseError(
     res,
-    new ErrorHandler(STATUS.UNAUTHORIZED, 'Token không được gửi')
+    new ErrorHandler(STATUS.UNAUTHORIZED, 'Token không được gửi'),
   )
 }
 
@@ -84,7 +84,7 @@ const verifyAdmin = async (req: Request, res: Response, next: NextFunction) => {
   }
   return responseError(
     res,
-    new ErrorHandler(STATUS.FORBIDDEN, 'Không có quyền truy cập')
+    new ErrorHandler(STATUS.FORBIDDEN, 'Không có quyền truy cập'),
   )
 }
 
