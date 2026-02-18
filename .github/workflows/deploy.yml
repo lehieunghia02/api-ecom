@@ -32,6 +32,7 @@ jobs:
           host: ${{ secrets.UAT_SSH_HOST }}
           username: ${{ secrets.UAT_SSH_USER }}
           key: ${{ secrets.UAT_SSH_PRIVATE_KEY }}
+          port: 24700
           script: |
             cd ${{ secrets.UAT_DEPLOY_PATH }}
             git fetch origin && git checkout uat && git pull origin uat
@@ -54,6 +55,7 @@ jobs:
           host: ${{ secrets.PROD_SSH_HOST }}
           username: ${{ secrets.PROD_SSH_USER }}
           key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+          port: 24700
           script: |
             cd ${{ secrets.PROD_DEPLOY_PATH }}
             git fetch origin && git checkout main && git pull origin main
