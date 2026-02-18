@@ -6,6 +6,7 @@ import { CategoryModel } from '../database/models/category.model'
 const addCategory = async (req: Request, res: Response) => {
   const name: string = req.body.name
   const categoryAdd = await new CategoryModel({ name }).save()
+  console.log(categoryAdd)
   const response = {
     message: 'Tạo Category thành công',
     data: categoryAdd.toObject({
@@ -51,7 +52,7 @@ const updateCategory = async (req: Request, res: Response) => {
   const categoryDB = await CategoryModel.findByIdAndUpdate(
     req.params.category_id,
     { name },
-    { new: true }
+    { new: true },
   )
     .select({ __v: 0 })
     .lean()
