@@ -44,7 +44,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     name: Deploy Production
-    environment: production
+    environment: production # production | uat
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

@@ -12,6 +12,7 @@ import { omitBy } from 'lodash'
 import { ORDER, SORT_BY } from '../constants/product'
 
 export const handleImageProduct = (product) => {
+  console.log(product)
   if (product.image !== undefined && product.image !== '') {
     product.image = HOST + `/${ROUTE_IMAGE}/` + product.image
   }
@@ -183,7 +184,7 @@ const getProduct = async (req: Request, res: Response) => {
   const productDB: any = await ProductModel.findOneAndUpdate(
     condition,
     { $inc: { view: 1 } },
-    { new: true }
+    { new: true },
   )
     .populate('category')
     .select({ __v: 0 })
@@ -228,14 +229,14 @@ const updateProduct = async (req: Request, res: Response) => {
       sold,
       view,
     },
-    (value) => value === undefined || value === ''
+    (value) => value === undefined || value === '',
   )
   const productDB = await ProductModel.findByIdAndUpdate(
     req.params.product_id,
     product,
     {
       new: true,
-    }
+    },
   )
     .select({ __v: 0 })
     .lean()
@@ -264,7 +265,7 @@ const deleteProduct = async (req: Request, res: Response) => {
 
 const deleteManyProducts = async (req: Request, res: Response) => {
   const list_id = (req.body.list_id as string[]).map((id: string) =>
-    mongoose.Types.ObjectId(id)
+    mongoose.Types.ObjectId(id),
   )
   const productDB: any = await ProductModel.find({
     _id: { $in: list_id },
